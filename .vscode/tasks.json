@@ -1,0 +1,55 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build C++ (MinGW)",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-Command",
+        "$p = Get-Process -Name '${fileBasenameNoExtension}' -ErrorAction SilentlyContinue; if ($p) { $p | Stop-Process -Force }; & 'C:/Users/creat/AppData/Local/Microsoft/WinGet/Packages/BrechtSanders.WinLibs.POSIX.UCRT_Microsoft.Winget.Source_8wekyb3d8bbwe/mingw64/bin/g++.exe' '${file}' -std=c++17 -o '${workspaceFolder}/${fileBasenameNoExtension}.exe'"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": "$gcc",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      }
+    },
+    {
+      "label": "Build all C++ files in folder",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-Command",
+        "Get-ChildItem -Path '${workspaceFolder}' -Filter *.cpp | Where-Object { $_.Length -gt 0 -and ((Get-Content $_.FullName -Raw -ErrorAction SilentlyContinue) -match '\\bmain\\s*\\(') } | ForEach-Object { $exe = Join-Path '${workspaceFolder}' ($_.BaseName + '.exe'); $p = Get-Process -Name $_.BaseName -ErrorAction SilentlyContinue; if ($p) { $p | Stop-Process -Force }; & 'C:/Users/creat/AppData/Local/Microsoft/WinGet/Packages/BrechtSanders.WinLibs.POSIX.UCRT_Microsoft.Winget.Source_8wekyb3d8bbwe/mingw64/bin/g++.exe' $_.FullName -std=c++17 -o $exe }"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": "$gcc",
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      }
+    }
+  ]
+}
