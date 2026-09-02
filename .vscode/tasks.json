@@ -3,14 +3,13 @@
   "tasks": [
     {
       "label": "Build C++ (MinGW)",
-      "type": "shell",
-      "command": "powershell",
+      "type": "process",
+      "command": "C:/Users/creat/AppData/Local/Microsoft/WinGet/Packages/BrechtSanders.WinLibs.POSIX.UCRT_Microsoft.Winget.Source_8wekyb3d8bbwe/mingw64/bin/g++.exe",
       "args": [
-        "-NoProfile",
-        "-ExecutionPolicy",
-        "Bypass",
-        "-Command",
-        "$p = Get-Process -Name '${fileBasenameNoExtension}' -ErrorAction SilentlyContinue; if ($p) { $p | Stop-Process -Force }; & 'C:/Users/creat/AppData/Local/Microsoft/WinGet/Packages/BrechtSanders.WinLibs.POSIX.UCRT_Microsoft.Winget.Source_8wekyb3d8bbwe/mingw64/bin/g++.exe' '${file}' -std=c++17 -o '${workspaceFolder}/${fileBasenameNoExtension}.exe'"
+        "${file}",
+        "-std=c++17",
+        "-o",
+        "${workspaceFolder}/${fileBasenameNoExtension}.exe"
       ],
       "options": {
         "cwd": "${workspaceFolder}"
