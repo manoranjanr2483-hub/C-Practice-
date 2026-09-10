@@ -3,13 +3,14 @@
   "tasks": [
     {
       "label": "Build C++ (MinGW)",
-      "type": "process",
-      "command": "C:/Users/creat/AppData/Local/Microsoft/WinGet/Packages/BrechtSanders.WinLibs.POSIX.UCRT_Microsoft.Winget.Source_8wekyb3d8bbwe/mingw64/bin/g++.exe",
+      "type": "shell",
+      "command": "powershell",
       "args": [
-        "${file}",
-        "-std=c++17",
-        "-o",
-        "${workspaceFolder}/${fileBasenameNoExtension}.exe"
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-Command",
+        "$p = Get-Process -Name '${fileBasenameNoExtension}' -ErrorAction SilentlyContinue; if ($p) { $p | Stop-Process -Force }; & g++ '${file}' -std=c++17 -mconsole '-Wl,--subsystem,console' -o '${workspaceFolder}/${fileBasenameNoExtension}.exe'"
       ],
       "options": {
         "cwd": "${workspaceFolder}"
@@ -34,7 +35,7 @@
         "-ExecutionPolicy",
         "Bypass",
         "-Command",
-        "Get-ChildItem -Path '${workspaceFolder}' -Filter *.cpp | Where-Object { $_.Length -gt 0 -and ((Get-Content $_.FullName -Raw -ErrorAction SilentlyContinue) -match '\\bmain\\s*\\(') } | ForEach-Object { $exe = Join-Path '${workspaceFolder}' ($_.BaseName + '.exe'); $p = Get-Process -Name $_.BaseName -ErrorAction SilentlyContinue; if ($p) { $p | Stop-Process -Force }; & 'C:/Users/creat/AppData/Local/Microsoft/WinGet/Packages/BrechtSanders.WinLibs.POSIX.UCRT_Microsoft.Winget.Source_8wekyb3d8bbwe/mingw64/bin/g++.exe' $_.FullName -std=c++17 -o $exe }"
+        "Get-ChildItem -Path '${workspaceFolder}' -Filter *.cpp | Where-Object { $_.Length -gt 0 -and ((Get-Content $_.FullName -Raw -ErrorAction SilentlyContinue) -match '\\bmain\\s*\\(') } | ForEach-Object { $exe = Join-Path '${workspaceFolder}' ($_.BaseName + '.exe'); $p = Get-Process -Name $_.BaseName -ErrorAction SilentlyContinue; if ($p) { $p | Stop-Process -Force }; & g++ $_.FullName -std=c++17 -mconsole '-Wl,--subsystem,console' -o $exe }"
       ],
       "options": {
         "cwd": "${workspaceFolder}"
