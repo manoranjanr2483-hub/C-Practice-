@@ -1,13 +1,25 @@
 {
     "C_Cpp.errorSquiggles": "enabled",
-    "C_Cpp.default.compilerPath": "g++",
+    "C_Cpp.default.compilerPath": "C:\\msys64\\ucrt64\\bin\\g++.exe",
     "C_Cpp.default.cppStandard": "c++17",
     "C_Cpp.default.intelliSenseMode": "windows-gcc-x64",
+    "terminal.integrated.env.windows": {
+        "PATH": "C:\\msys64\\ucrt64\\bin;${env:PATH}"
+    },
+    "terminal.integrated.profiles.windows": {
+        "PowerShell with GCC": {
+            "source": "PowerShell",
+            "env": {
+                "PATH": "C:\\msys64\\ucrt64\\bin;${env:PATH}"
+            }
+        }
+    },
+    "terminal.integrated.defaultProfile.windows": "PowerShell with GCC",
     "code-runner.runInTerminal": true,
     "code-runner.executorMap": {
-        "cpp": "g++ -std=c++17 -mconsole '-Wl,--subsystem,console' \"$fullFileName\" -o \"$dir$fileNameWithoutExt.exe\"; if ($LASTEXITCODE -eq 0) { & \"$dir$fileNameWithoutExt.exe\" }"
+        "cpp": "$source = \"$fullFileName\"; if (-not (Select-String -Path $source -Pattern '\\bmain\\s*\\(' -Quiet)) { Write-Error 'This file has no main() function. Add int main() before running a standalone program.'; exit 1 }; $env:PATH = 'C:\\msys64\\ucrt64\\bin;' + $env:PATH; & 'C:\\msys64\\ucrt64\\bin\\g++.exe' -std=c++17 -mconsole '-Wl,--subsystem,console' \"$source\" -o \"$dir$fileNameWithoutExt.exe\"; if ($LASTEXITCODE -eq 0) { & \"$dir$fileNameWithoutExt.exe\" }"
     },
     "code-runner.executorMapByFileExtension": {
-        ".cpp": "g++ -std=c++17 -mconsole '-Wl,--subsystem,console' \"$fullFileName\" -o \"$dir$fileNameWithoutExt.exe\"; if ($LASTEXITCODE -eq 0) { & \"$dir$fileNameWithoutExt.exe\" }"
+        ".cpp": "$source = \"$fullFileName\"; if (-not (Select-String -Path $source -Pattern '\\bmain\\s*\\(' -Quiet)) { Write-Error 'This file has no main() function. Add int main() before running a standalone program.'; exit 1 }; $env:PATH = 'C:\\msys64\\ucrt64\\bin;' + $env:PATH; & 'C:\\msys64\\ucrt64\\bin\\g++.exe' -std=c++17 -mconsole '-Wl,--subsystem,console' \"$source\" -o \"$dir$fileNameWithoutExt.exe\"; if ($LASTEXITCODE -eq 0) { & \"$dir$fileNameWithoutExt.exe\" }"
     }
 }

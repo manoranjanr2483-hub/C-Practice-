@@ -3,17 +3,21 @@
   "tasks": [
     {
       "label": "Build C++ (MinGW)",
-      "type": "shell",
-      "command": "powershell",
+      "type": "process",
+      "command": "C:\\msys64\\ucrt64\\bin\\g++.exe",
       "args": [
-        "-NoProfile",
-        "-ExecutionPolicy",
-        "Bypass",
-        "-Command",
-        "$p = Get-Process -Name '${fileBasenameNoExtension}' -ErrorAction SilentlyContinue; if ($p) { $p | Stop-Process -Force }; & g++ '${file}' -std=c++17 -mconsole '-Wl,--subsystem,console' -o '${workspaceFolder}/${fileBasenameNoExtension}.exe'"
+        "${file}",
+        "-std=c++17",
+        "-mconsole",
+        "-Wl,--subsystem,console",
+        "-o",
+        "${workspaceFolder}\\${fileBasenameNoExtension}.exe"
       ],
       "options": {
-        "cwd": "${workspaceFolder}"
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "PATH": "C:\\msys64\\ucrt64\\bin;${env:PATH}"
+        }
       },
       "problemMatcher": "$gcc",
       "group": {
@@ -28,17 +32,20 @@
     },
     {
       "label": "Build all C++ files in folder",
-      "type": "shell",
-      "command": "powershell",
+      "type": "process",
+      "command": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
       "args": [
         "-NoProfile",
         "-ExecutionPolicy",
         "Bypass",
         "-Command",
-        "Get-ChildItem -Path '${workspaceFolder}' -Filter *.cpp | Where-Object { $_.Length -gt 0 -and ((Get-Content $_.FullName -Raw -ErrorAction SilentlyContinue) -match '\\bmain\\s*\\(') } | ForEach-Object { $exe = Join-Path '${workspaceFolder}' ($_.BaseName + '.exe'); $p = Get-Process -Name $_.BaseName -ErrorAction SilentlyContinue; if ($p) { $p | Stop-Process -Force }; & g++ $_.FullName -std=c++17 -mconsole '-Wl,--subsystem,console' -o $exe }"
+        "Get-ChildItem -Path '${workspaceFolder}' -Filter *.cpp | Where-Object { $_.Length -gt 0 -and ((Get-Content $_.FullName -Raw -ErrorAction SilentlyContinue) -match '\\bmain\\s*\\(') } | ForEach-Object { $exe = Join-Path '${workspaceFolder}' ($_.BaseName + '.exe'); $p = Get-Process -Name $_.BaseName -ErrorAction SilentlyContinue; if ($p) { $p | Stop-Process -Force }; & 'C:\\msys64\\ucrt64\\bin\\g++.exe' $_.FullName -std=c++17 -mconsole '-Wl,--subsystem,console' -o $exe }"
       ],
       "options": {
-        "cwd": "${workspaceFolder}"
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "PATH": "C:\\msys64\\ucrt64\\bin;${env:PATH}"
+        }
       },
       "problemMatcher": "$gcc",
       "group": {
